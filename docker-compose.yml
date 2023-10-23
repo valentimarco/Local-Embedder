@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  llama2-embedder:
+  local-embedder:
     build:
       context: ./embedder
     environment:
