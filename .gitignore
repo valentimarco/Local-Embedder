@@ -1,3 +1,21 @@
-./core
+# Ignore compiled Python files
+*.pyc
+
+# Ignore virtual environment
+venv/
+
+# Ignore local configuration files
 .env
-.vscode
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore core files
+./core/**
+
+# Ignore long term memory files
+long_term_memory/**
+
+# Ignore cache files
+cache/**
+

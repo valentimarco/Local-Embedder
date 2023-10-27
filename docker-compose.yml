@@ -1,22 +1,13 @@
 version: '3.7'
 
 services:
-  local-embedder:
-    container_name: embedder
-    build:
-      context: ./
-    environment:
-      - CACHE_DIR=${CACHE_DIR:-./cache}
-    volumes:
-      - ./:/app
-    ports:
-      - ${PORT_EMBEDDER:-8000}:8000
   cheshire-cat-core:
     build:
       context: ./core/core
     container_name: cheshire_cat_core
     depends_on:
       - cheshire-cat-vector-memory
+      - embedder
     environment:
       - PYTHONUNBUFFERED=1
       - WATCHFILES_FORCE_POLLING=true
@@ -32,12 +23,23 @@ services:
     ports:
       - ${CORE_PORT:-1865}:80
     volumes:
-      - ./core:/app
+      - ./core/core:/app
     command:
       - python
       - "-m"
       - "cat.main"
     restart: unless-stopped
+
+  embedder:
+    container_name: local_embedder
+    build:
+      context: ./
+    environment:
+      - CACHE_DIR=${CACHE_DIR:-./cache}
+    volumes:
+      - ./:/app
+    ports:
+      - ${PORT_EMBEDDER:-8000}:8000
 
   cheshire-cat-vector-memory:
     image: qdrant/qdrant:v1.1.1
